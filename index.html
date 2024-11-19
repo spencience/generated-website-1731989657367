@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html data-page-type="static" lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="description" content="Spencience homepage with snake game">
+<meta name="keywords" content="Spencience, snake game, cryptocurrency">
+<meta name="author" content="Spencience">
+<meta property="og:title" content="Spencience Homepage">
+<meta property="og:description" content="Spencience homepage with snake game">
+<meta property="og:image" content="https://example.com/spencience-logo.png">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:title" content="Spencience Homepage">
+<meta property="twitter:description" content="Spencience homepage with snake game">
+<meta property="twitter:image" content="https://example.com/spencience-logo.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://example.com/spencience-favicon.png">
+<link rel="manifest" href="https://example.com/manifest.json">
+<title>Spencience Homepage</title>
+<script src="https://cdn.tailwindcss.com?plugins=aspect-ratio,forms" integrity="sha384-ESrohqk9kCwp4eQm9Jutxh0CNxlemuDkEayGINDi2OHgZrG3Y7kSYasFzxmWawKi" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.min.js" integrity="sha256-zYeY3AcGv8V8dZHVZdpRNWAQW6XaHfupFpQK8ejaQ4=" crossorigin="anonymous"></script>
+</head>
+<body>
+<header class="bg-purple-500 text-white p-4">
+<nav class="container mx-auto flex justify-between">
+<a href="#" class="text-2xl font-bold">Spencience</a>
+<ul class="flex items-center space-x-4">
+<li><a href="#" class="hover:text-gray-200">Home</a></li>
+<li><a href="#" class="hover:text-gray-200">About</a></li>
+<li><a href="#" class="hover:text-gray-200">Contact</a></li>
+</ul>
+</nav>
+</header>
+<main class="container mx-auto p-4 mt-4">
+<section class="flex flex-col items-center space-y-4">
+<h1 class="text-4xl font-bold">Spencience Snake Game</h1>
+<div id="game" class="w-full h-screen bg-gray-200"></div>
+<button id="play-button" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded">Play Game</button>
+</section>
+</main>
+<footer class="bg-purple-500 text-white p-4 mt-4">
+<div class="container mx-auto flex justify-between">
+<p>&copy; 2023 Spencience</p>
+<ul class="flex items-center space-x-4">
+<li><a href="#" class="hover:text-gray-200">Terms</a></li>
+<li><a href="#" class="hover:text-gray-200">Privacy</a></li>
+</ul>
+</div>
+</footer>
+<script>
+</script>
+<script>
+                // Initialize Phaser
+                var config = {
+                  type: Phaser.AUTO,
+                  width: 800,
+                  height: 600,
+                  scene: {
+                    preload: preload,
+                    create: create,
+                    update: update
+                  }
+                };
+
+                var game = new Phaser.Game(config);
+
+                function preload() {
+                  // Load snake game assets
+                  this.load.image('snake', 'https://example.com/snake.png');
+                  this.load.image('food', 'https://example.com/food.png');
+                }
+
+                var snake;
+                var food;
+                var score = 0;
+playButton = document.getElementById('play-button');
+
+playButton.addEventListener('click', function() {
+  // Start game logic here
+  game.scene.scenes[0].start();
+  score = 0;
+});
+
+                function create() {
+                  // Create snake game objects
+                  snake = this.physics.add.sprite(400, 300, 'snake');
+                  snake.setCollideWorldBounds(true);
+
+                  food = this.physics.add.sprite(400, 300, 'food');
+                  food.setCollideWorldBounds(true);
+
+                  // Initialize score text
+                  scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
+
+                  // Set up keyboard input
+                  cursors = this.input.keyboard.createCursorKeys();
+
+                  // Start game loop
+                  this.physics.add.collider(snake, food, eatFood, null, this);
+                }
+
+                function update(time, delta) {
+                  // Handle keyboard input
+                  if (cursors.up.isDown) {
+                    snake.setVelocityY(-200);
+                    snake.setVelocityX(0);
+                  } else if (cursors.down.isDown) {
+                    snake.setVelocityY(200);
+                    snake.setVelocityX(0);
+                  } else if (cursors.left.isDown) {
+                    snake.setVelocityX(-200);
+                    snake.setVelocityY(0);
+                  } else if (cursors.right.isDown) {
+                    snake.setVelocityX(200);
+                    snake.setVelocityY(0);
+                  }
+
+                  // Update score text
+                  scoreText.setText('Score: ' + score);
+                }
+
+                function eatFood(snake, food) {
+                  // Update score
+                  score += 1;
+
+                  // Respawn food
+                  food.x = Phaser.Math.RND.between(0, 800);
+                  food.y = Phaser.Math.RND.between(0, 600);
+                }
+                </script>
+</main>
